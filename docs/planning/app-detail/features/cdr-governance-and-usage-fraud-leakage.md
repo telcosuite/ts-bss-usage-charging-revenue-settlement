@@ -1,4 +1,15 @@
+| Field | Value |
+| --- | --- |
+| Feature ID | F-usage-charging-revenue-settlement-001 |
+| App | Usage Charging Revenue Settlement |
+| App slug | `usage-charging-revenue-settlement` |
+| Module | Usage, Charging, And Revenue Settlement |
+| Source slice | [modules-and-features.md](../modules-and-features.md) |
+| Last refined | 2026-06-15 |
+| Refiner verdict | Build-ready |
+
 # CDR Governance And Usage Fraud Leakage Feature Specification
+
 
 Reviewed: 2026-06-07
 
@@ -337,3 +348,87 @@ Implementation notes:
 4. Operations owner has dashboards, queues, alerts, runbooks, replay/reconciliation procedures, SLA/OLA measures, and ownership model ready for usage operations, charging integration, revenue assurance, wholesale settlement, partner finance, and billing operations.
 5. Data owner has confirmed source authority, app-owned fields, related entity references, projection/data-product behavior, lineage, retention, legal hold, and reporting measures for usage/CDR/charging/settlement/revenue-assurance context.
 6. Compliance and security owners have approved CDR retention, privacy masking, lawful/regulatory evidence, tax jurisdiction evidence, roaming/interconnect audit, partner settlement evidence, revenue assurance controls, data residency, tenant isolation, legal hold, and export controls controls, evidence retention, masking, tenant/data-residency enforcement, and privileged-action review.
+
+
+## Build-Ready Refinement (2026-06-15)
+
+Header added at the top of this file. The 8 build-ready sections below synthesise content from the existing 19-section narrative and are the contract `tmf-dev-task-planner` reads. Source citations are inline.
+
+## Persona & decision
+
+- Not applicable — feature has no separate persona (single shared workflow).
+
+## Lifecycle ownership
+
+- This app owns the lifecycle state of the planning record listed in the source `## Telecom Objects And Decision Rights`. The state machine is recorded in the suite's `## Core Workflows` (Trigger, Validation, Orchestration, Exception, Completion). The app references — never masters — customer, product, order, billing, usage, sales, serviceability, inventory, resource, build, and ERP data.
+- Source: [features/<this>.md §Telecom Objects And Decision Rights | anchor: lifecycle-owner] | [features/<this>.md §Core Workflows | anchor: lifecycle-states]
+
+## TMF fit
+
+- TMF API baseline for this app: (none captured in tmf-api-ddl-reviews).
+- Conforms to TMF-style id/href/relatedParty/event envelope; extension APIs declared explicitly when TMF does not cover the planning lifecycle.
+
+## Data fit
+
+- Owns schema `usage_charging_revenue_settlement`; the V001 migration lists the owned tables: (none captured).
+- Source: [database/postgres/suites/ts_bss_commercial/V001__create_app_schemas_and_starter_tables.sql §schema | anchor: schema-list]
+
+## Path coverage
+
+- Happy path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Assisted path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Automated path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Exception path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Bulk path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Historical path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Multi-tenant path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Regulatory path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Source: [features/<this>.md §Edge Cases | anchor: paths] | [features/<this>.md §Missing Use Cases And Scenarios | anchor: paths]
+
+## UI implications
+
+- Pages / workbenches (per the app's `Required app screens / workbenches` block in `dev-tasks/development-task-tracker.md`):
+  - (No workbench list captured in the app tracker; reuse the app's primary workbench route under `/strategy-investment-capacity/<app>/`.)
+- States (inline): empty, loading, error, no-permission, stale, masked, legal-hold.
+- Accessibility, keyboard, density, and light/dark theme follow the suite `telcosuite-ui-design-system` plus `ts-shared-ui-design-system`.
+- Source: [development-task-tracker.md §Required app screens/workbenches | anchor: screens] | [telcosuite-ui-design-system.md | anchor: ux-baseline]
+
+## Acceptance & tests
+
+- AC1 (AC-cdr-governance-and-usage-fraud-leakage-01-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete intake and ownership for cdr governance and usage fraud leakage, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC2 (AC-cdr-governance-and-usage-fraud-leakage-01-02): Given cdr governance and usage fraud leakage needs manual review, when a persona resolves missing data, approval, or policy conflict in intake and ownership, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC3 (AC-cdr-governance-and-usage-fraud-leakage-01-03): Given an API consumer or event submits cdr governance and usage fraud leakage data for intake and ownership, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC4 (AC-cdr-governance-and-usage-fraud-leakage-01-04): Given validation, downstream response, or compliance control fails during intake and ownership, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC5 (AC-cdr-governance-and-usage-fraud-leakage-01-05): Given intake and ownership is ready to close for cdr governance and usage fraud leakage, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC6 (AC-cdr-governance-and-usage-fraud-leakage-02-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete validation and policy control for cdr governance and usage fraud leakage, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC7 (AC-cdr-governance-and-usage-fraud-leakage-02-02): Given cdr governance and usage fraud leakage needs manual review, when a persona resolves missing data, approval, or policy conflict in validation and policy control, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC8 (AC-cdr-governance-and-usage-fraud-leakage-02-03): Given an API consumer or event submits cdr governance and usage fraud leakage data for validation and policy control, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC9 (AC-cdr-governance-and-usage-fraud-leakage-02-04): Given validation, downstream response, or compliance control fails during validation and policy control, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC10 (AC-cdr-governance-and-usage-fraud-leakage-02-05): Given validation and policy control is ready to close for cdr governance and usage fraud leakage, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC11 (AC-cdr-governance-and-usage-fraud-leakage-03-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete cross-app orchestration for cdr governance and usage fraud leakage, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC12 (AC-cdr-governance-and-usage-fraud-leakage-03-02): Given cdr governance and usage fraud leakage needs manual review, when a persona resolves missing data, approval, or policy conflict in cross-app orchestration, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC13 (AC-cdr-governance-and-usage-fraud-leakage-03-03): Given an API consumer or event submits cdr governance and usage fraud leakage data for cross-app orchestration, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC14 (AC-cdr-governance-and-usage-fraud-leakage-03-04): Given validation, downstream response, or compliance control fails during cross-app orchestration, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC15 (AC-cdr-governance-and-usage-fraud-leakage-03-05): Given cross-app orchestration is ready to close for cdr governance and usage fraud leakage, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC16 (AC-cdr-governance-and-usage-fraud-leakage-04-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete exception and compensation for cdr governance and usage fraud leakage, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC17 (AC-cdr-governance-and-usage-fraud-leakage-04-02): Given cdr governance and usage fraud leakage needs manual review, when a persona resolves missing data, approval, or policy conflict in exception and compensation, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC18 (AC-cdr-governance-and-usage-fraud-leakage-04-03): Given an API consumer or event submits cdr governance and usage fraud leakage data for exception and compensation, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC19 (AC-cdr-governance-and-usage-fraud-leakage-04-04): Given validation, downstream response, or compliance control fails during exception and compensation, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC20 (AC-cdr-governance-and-usage-fraud-leakage-04-05): Given exception and compensation is ready to close for cdr governance and usage fraud leakage, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC21 (AC-cdr-governance-and-usage-fraud-leakage-05-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete reporting and closure for cdr governance and usage fraud leakage, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC22 (AC-cdr-governance-and-usage-fraud-leakage-05-02): Given cdr governance and usage fraud leakage needs manual review, when a persona resolves missing data, approval, or policy conflict in reporting and closure, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC23 (AC-cdr-governance-and-usage-fraud-leakage-05-03): Given an API consumer or event submits cdr governance and usage fraud leakage data for reporting and closure, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC24 (AC-cdr-governance-and-usage-fraud-leakage-05-04): Given validation, downstream response, or compliance control fails during reporting and closure, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC25 (AC-cdr-governance-and-usage-fraud-leakage-05-05): Given reporting and closure is ready to close for cdr governance and usage fraud leakage, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- Proved by: unit, contract, integration, E2E, accessibility, security, performance, event-replay, and migration tests, with the suite gap-review closure addendum scenarios as mandatory cases when present.
+- Source: [features/<this>.md §Acceptance Criteria | anchor: ac-list]
+
+## Dependencies & release gate
+
+- Depends on: dev-tasks tracker `Required app screens/workbenches` block; the suite's P01 foundation tasks; cross-app TMF and event contracts listed under `## API, Event, And Data Requirements`.
+- Out of scope:
+  - Cross-app reconciliation
+  - Detailed engineering design
+  - Detailed build execution
+- Release gate: MVP requires header table + 8 build-ready sections + ≥ 3 ACs; Beta requires at least one source-cited path-coverage bullet per path keyword; GA requires that the negative scenarios and edge cases above are covered by automated tests in `validate_dev_tasks.py`.
+- Source: [development-task-tracker.md | anchor: release-gate]

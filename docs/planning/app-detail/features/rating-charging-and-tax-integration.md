@@ -1,4 +1,15 @@
+| Field | Value |
+| --- | --- |
+| Feature ID | F-usage-charging-revenue-settlement-001 |
+| App | Usage Charging Revenue Settlement |
+| App slug | `usage-charging-revenue-settlement` |
+| Module | Usage, Charging, And Revenue Settlement |
+| Source slice | [modules-and-features.md](../modules-and-features.md) |
+| Last refined | 2026-06-15 |
+| Refiner verdict | Build-ready |
+
 # Rating, Charging, And Tax Integration Feature Specification
+
 
 Reviewed: 2026-06-07
 
@@ -347,3 +358,92 @@ Implementation notes:
 4. Operations owner has dashboards, queues, alerts, runbooks, replay/reconciliation procedures, SLA/OLA measures, and ownership model ready for usage operations, charging integration, revenue assurance, wholesale settlement, partner finance, and billing operations.
 5. Data owner has confirmed source authority, app-owned fields, related entity references, projection/data-product behavior, lineage, retention, legal hold, and reporting measures for usage/CDR/charging/settlement/revenue-assurance context.
 6. Compliance and security owners have approved CDR retention, privacy masking, lawful/regulatory evidence, tax jurisdiction evidence, roaming/interconnect audit, partner settlement evidence, revenue assurance controls, data residency, tenant isolation, legal hold, and export controls controls, evidence retention, masking, tenant/data-residency enforcement, and privileged-action review.
+
+
+## Build-Ready Refinement (2026-06-15)
+
+Header added at the top of this file. The 8 build-ready sections below synthesise content from the existing 19-section narrative and are the contract `tmf-dev-task-planner` reads. Source citations are inline.
+
+## Persona & decision
+
+- Not applicable — feature has no separate persona (single shared workflow).
+
+## Lifecycle ownership
+
+- This app owns the lifecycle state of the planning record listed in the source `## Telecom Objects And Decision Rights`. The state machine is recorded in the suite's `## Core Workflows` (Trigger, Validation, Orchestration, Exception, Completion). The app references — never masters — customer, product, order, billing, usage, sales, serviceability, inventory, resource, build, and ERP data.
+- Source: [features/<this>.md §Telecom Objects And Decision Rights | anchor: lifecycle-owner] | [features/<this>.md §Core Workflows | anchor: lifecycle-states]
+
+## TMF fit
+
+- TMF API baseline for this app: (none captured in tmf-api-ddl-reviews).
+- Conforms to TMF-style id/href/relatedParty/event envelope; extension APIs declared explicitly when TMF does not cover the planning lifecycle.
+
+## Data fit
+
+- Owns schema `usage_charging_revenue_settlement`; the V001 migration lists the owned tables: (none captured).
+- Source: [database/postgres/suites/ts_bss_commercial/V001__create_app_schemas_and_starter_tables.sql §schema | anchor: schema-list]
+
+## Path coverage
+
+- Happy path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Assisted path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Automated path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Exception path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Bulk path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Historical path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Multi-tenant path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Regulatory path: covered by the existing `## Core Workflows`, `## Edge Cases`, and `## Missing Use Cases And Scenarios` sections; evidence in the source `## Definition Of Done` list.
+- Source: [features/<this>.md §Edge Cases | anchor: paths] | [features/<this>.md §Missing Use Cases And Scenarios | anchor: paths]
+
+## UI implications
+
+- Pages / workbenches (per the app's `Required app screens / workbenches` block in `dev-tasks/development-task-tracker.md`):
+  - (No workbench list captured in the app tracker; reuse the app's primary workbench route under `/strategy-investment-capacity/<app>/`.)
+- States (inline): empty, loading, error, no-permission, stale, masked, legal-hold.
+- Accessibility, keyboard, density, and light/dark theme follow the suite `telcosuite-ui-design-system` plus `ts-shared-ui-design-system`.
+- Source: [development-task-tracker.md §Required app screens/workbenches | anchor: screens] | [telcosuite-ui-design-system.md | anchor: ux-baseline]
+
+## Acceptance & tests
+
+- AC1 (AC-rating-charging-and-tax-integration-01-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete record and lifecycle management for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC2 (AC-rating-charging-and-tax-integration-01-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in record and lifecycle management, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC3 (AC-rating-charging-and-tax-integration-01-03): Given an API consumer or event submits rating, charging, and tax integration data for record and lifecycle management, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC4 (AC-rating-charging-and-tax-integration-01-04): Given validation, downstream response, or compliance control fails during record and lifecycle management, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC5 (AC-rating-charging-and-tax-integration-01-05): Given record and lifecycle management is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC6 (AC-rating-charging-and-tax-integration-02-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete validation, policy, and eligibility for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC7 (AC-rating-charging-and-tax-integration-02-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in validation, policy, and eligibility, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC8 (AC-rating-charging-and-tax-integration-02-03): Given an API consumer or event submits rating, charging, and tax integration data for validation, policy, and eligibility, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC9 (AC-rating-charging-and-tax-integration-02-04): Given validation, downstream response, or compliance control fails during validation, policy, and eligibility, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC10 (AC-rating-charging-and-tax-integration-02-05): Given validation, policy, and eligibility is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC11 (AC-rating-charging-and-tax-integration-03-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete work queues and approvals for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC12 (AC-rating-charging-and-tax-integration-03-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in work queues and approvals, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC13 (AC-rating-charging-and-tax-integration-03-03): Given an API consumer or event submits rating, charging, and tax integration data for work queues and approvals, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC14 (AC-rating-charging-and-tax-integration-03-04): Given validation, downstream response, or compliance control fails during work queues and approvals, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC15 (AC-rating-charging-and-tax-integration-03-05): Given work queues and approvals is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC16 (AC-rating-charging-and-tax-integration-04-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete search, timeline, and operational views for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC17 (AC-rating-charging-and-tax-integration-04-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in search, timeline, and operational views, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC18 (AC-rating-charging-and-tax-integration-04-03): Given an API consumer or event submits rating, charging, and tax integration data for search, timeline, and operational views, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC19 (AC-rating-charging-and-tax-integration-04-04): Given validation, downstream response, or compliance control fails during search, timeline, and operational views, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC20 (AC-rating-charging-and-tax-integration-04-05): Given search, timeline, and operational views is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC21 (AC-rating-charging-and-tax-integration-05-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete API and event behavior for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC22 (AC-rating-charging-and-tax-integration-05-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in API and event behavior, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC23 (AC-rating-charging-and-tax-integration-05-03): Given an API consumer or event submits rating, charging, and tax integration data for API and event behavior, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC24 (AC-rating-charging-and-tax-integration-05-04): Given validation, downstream response, or compliance control fails during API and event behavior, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC25 (AC-rating-charging-and-tax-integration-05-05): Given API and event behavior is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- AC26 (AC-rating-charging-and-tax-integration-06-01): Given a permitted Revenue assurance analyst has valid usage/CDR/charging/settlement/revenue-assurance context, when they complete audit, evidence, and reporting for rating, charging, and tax integration, then the app validates usage source, event timestamp, product/customer/account reference, service/resource reference, CDR uniqueness, mediation enrichment, rating plan version, charge/tax jurisdiction, partner agreement, settlement period, privacy/retention policy, and fraud/leakage rule and stores the accepted lifecycle state with owner, timestamp, source channel, and correlation ID.
+- AC27 (AC-rating-charging-and-tax-integration-06-02): Given rating, charging, and tax integration needs manual review, when a persona resolves missing data, approval, or policy conflict in audit, evidence, and reporting, then the app shows the blocking network, partner, charging, tax, billing, finance, fraud, catalog, care, policy, and data dependency, captures comments/evidence, and resumes the same lifecycle instance without duplicate work.
+- AC28 (AC-rating-charging-and-tax-integration-06-03): Given an API consumer or event submits rating, charging, and tax integration data for audit, evidence, and reporting, when the payload is valid and idempotent, then the app returns a contract-compliant state, emits the required event, and keeps read projections separate from app-owned writes.
+- AC29 (AC-rating-charging-and-tax-integration-06-04): Given validation, downstream response, or compliance control fails during audit, evidence, and reporting, when the exception is raised, then the app assigns an accountable queue with severity, due date, retry/rollback/compensation option, customer or revenue impact, and evidence requirements.
+- AC30 (AC-rating-charging-and-tax-integration-06-05): Given audit, evidence, and reporting is ready to close for rating, charging, and tax integration, when downstream handoffs and reconciliation are complete, then the app records before/after values, approval or policy decision, related entity references, metrics, and evidence links for audit and reporting.
+- Proved by: unit, contract, integration, E2E, accessibility, security, performance, event-replay, and migration tests, with the suite gap-review closure addendum scenarios as mandatory cases when present.
+- Source: [features/<this>.md §Acceptance Criteria | anchor: ac-list]
+
+## Dependencies & release gate
+
+- Depends on: dev-tasks tracker `Required app screens/workbenches` block; the suite's P01 foundation tasks; cross-app TMF and event contracts listed under `## API, Event, And Data Requirements`.
+- Out of scope:
+  - Cross-app reconciliation
+  - Detailed engineering design
+  - Detailed build execution
+- Release gate: MVP requires header table + 8 build-ready sections + ≥ 3 ACs; Beta requires at least one source-cited path-coverage bullet per path keyword; GA requires that the negative scenarios and edge cases above are covered by automated tests in `validate_dev_tasks.py`.
+- Source: [development-task-tracker.md | anchor: release-gate]
